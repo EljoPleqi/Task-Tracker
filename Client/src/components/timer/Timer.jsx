@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { PauseIcon } from '@heroicons/react/outline';
+import {
+  PlayIcon,
+  PauseIcon,
+  CheckIcon,
+  TrashIcon,
+} from '@heroicons/react/outline';
 
 const Timer = ({ time }) => {
   const [seconds, setSeconds] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
 
   const displayMinutes = Math.floor(seconds / 60);
 
@@ -29,61 +34,47 @@ const Timer = ({ time }) => {
     startTimer();
 
     // Assign values to references
-    secondsRef.current = pomodoro * 60;
+    secondsRef.current = time * 60;
     setSeconds(secondsRef.current);
 
     //  set up an interval that will run every seconds
-    console.log(displayMinutes);
+
     const t = setInterval(() => {
       if (stateRef.current) return;
-      if (seconds.current === 0) console.log('timer over');
+      if (secondsRef.current === 0) console.log('timer over');
+
       countdown();
     }, 1000);
 
     return () => {
-      clearInterval();
+      clearInterval(t);
     };
   }, []);
 
   return (
-    <div className="bg-white rounded-lg p-4 place-self-end w-full md:rounded-none">
-      <div className="flex items-center justify-center p-4 ">
-        <div className="flex flex-col text-slate-700 text-4xl font-bold justify-center items-center">
-          {`${displayMinutes} : ${displaySeconds} `}
-        </div>
+    <div className="flex flex-col items-center justify-center gap-4">
+      <div className=" text-[#263a44] text-4xl font-bold  py-4 ">
+        {`${displayMinutes} : ${displaySeconds} `}
       </div>
-      {/* 
-      <div className="flex justify-center gap-4">
-        <button
-          className="bg-slate-700 text-white rounded-md px-4 py-2 active:translate-y-1"
-          onClick={() => {
-            setPomodoro((pomodoro) => pomodoro - 25);
-            secondsRef.current = (pomodoro - 25) * 60;
-            setSeconds(secondsRef.current);
-          }}
-        >
-          -
-        </button>
-        <button
-          className="bg-slate-700 text-white rounded-md px-4 py-2 active:translate-y-1 "
+      <span className="p-4 b bg-[#60B158] text-white rounded-lg">
+        <span
+          className="flex justify-center gap-2 cursor-pointer "
           onClick={() => {
             setPaused(!paused);
-            stateRef.current = paused;
+            stateRef.current = !paused;
           }}
         >
-          <PauseIcon className="h-6 w-6 text-white" />
-        </button>
-        <button
-          className="bg-slate-700 text-white rounded-md px-4 py-2 active:translate-y-1"
-          onClick={() => {
-            setPomodoro((pomodoro) => pomodoro + 25);
-            secondsRef.current = (pomodoro + 25) * 60;
-            setSeconds(secondsRef.current);
-          }}
-        >
-          +
-        </button>
-      </div> */}
+          {paused ? (
+            <>
+              <PlayIcon className="h-6 w-6" /> <p> Start Timer </p>
+            </>
+          ) : (
+            <>
+              <PauseIcon className="h-6 w-6" /> <p> Pause Timer</p>
+            </>
+          )}
+        </span>
+      </span>
     </div>
   );
 };

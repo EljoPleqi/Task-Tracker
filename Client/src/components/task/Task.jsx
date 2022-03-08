@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { TrashIcon, ClockIcon, CheckIcon } from '@heroicons/react/outline';
+
+import Timer from '../timer/Timer';
+
+import {
+  TrashIcon,
+  ClockIcon,
+  CheckIcon,
+  XIcon,
+} from '@heroicons/react/outline';
 import axios from 'axios';
 
-const Task = () => {
+const Task = ({ setOpenTask, openTask }) => {
   const [tasks, setTasks] = useState([]);
   const [rerender, setRerender] = useState(false);
 
@@ -12,7 +20,7 @@ const Task = () => {
 
   console.log(tasks);
 
-  const TaskCards = tasks.map((task) => {
+  const TaskCards = tasks.map((task, i) => {
     const deleteTask = () => {
       axios.delete(`http://localhost:3030/tasks/${task.id}`);
     };
@@ -22,51 +30,50 @@ const Task = () => {
     };
     return (
       <div
-        className="grid grid-cols-oneThreeOne gap-2 bg-white rounded-lg p-2  shadow-sm "
+        className={` bg-[#F7F6F3] justify-between p-2 rounded-lg shadow-sm py-4
+       
+        ${
+          openTask === i
+            ? `flex flex-col items-center justify-center`
+            : `grid grid-cols-oneFour gap-4`
+        }`}
         key={task.id}
+        onClick={() => setOpenTask(i)}
       >
         <div>
           <img
             src={`http://localhost:3030/${task.image}`}
             alt=""
-            className="w-24 h-16 object-cover text-sm rounded-lg"
+            className={` object-cover text-sm rounded-lg ${
+              open === i ? 'w-full h-full  md:w-64 md:h-64' : 'w-16 h-16'
+            }`}
           />
         </div>
-
-        <div className="flex flex-col ml-4 justify-center gap-2 items-start">
+        <div className={`flex flex-col justify-center gap-2 `}>
           <h2>{task.title}</h2>
-          <div className="flex gap-2 text-neutral-600">
-            <span className="flex gap-2  justify-center items-center">
-              <ClockIcon className="h-4 w-4 " />
-              <p>{task.duration} mins</p>
-            </span>
+
+          <span className="flex gap-2 items-center text-xs text-[#736B5B]">
+            <ClockIcon className="h-6 w-6" />
+            <p>{task.duration} minutes</p>
             <p
-              className={`p-1 rounded-lg text-xs text-white
-                ${task.importance === 'high' && `bg-red-600`}
-                ${task.importance === 'normal && bg-green-500'}
-                ${task.importance === 'low' && `bg-slate-400`}`}
+              className={` ${
+                task.importance === 'low' &&
+                'bg-[#60B158] bg-opacity-30 px-2 py-1 p rounded-full font-bold text-[#60B158]'
+              }
+        ${
+          task.importance === 'normal' &&
+          'bg-[#FEBC2B] bg-opacity-30 px-2 py-1 rounded-full font-bold text-[#FEBC2B]'
+        }
+        ${
+          task.importance === 'high' &&
+          'bg-[#FC413B] bg-opacity-30 px-2 py-1 rounded-full font-bold text-[#FC413B]'
+        }`}
             >
               {task.importance}
             </p>
-          </div>
+          </span>
         </div>
-        <div className="flex  justify-center items-center gap-2">
-          <CheckIcon
-            className="h-9 w-9 rounded-lg border-2 border-green-500 
-          text-green-600 hover:bg-green-600 hover:text-white p-1 box-border active:bg-green-800 active:text-white active:translate-y-1"
-            onClick={() => {
-              markAsDone();
-              setRerender(!rerender);
-            }}
-          />
-          <TrashIcon
-            className="h-9 w-9 rounded-lg border-2 border-red-500 text-red-600 hover:bg-red-600 hover:text-white p-1 box-border active:bg-red-800 active:text-white active:translate-y-1"
-            onClick={() => {
-              deleteTask();
-              setRerender(!rerender);
-            }}
-          />
-        </div>
+        {openTask === i && <Timer time={task.duration} />}
       </div>
     );
   });
