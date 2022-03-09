@@ -52,8 +52,8 @@ const Task = ({ setOpenTask, openTask }) => {
         <div className={`flex flex-col justify-center gap-2 `}>
           <h2>{task.title}</h2>
 
-          <span className="flex gap-2 items-center text-xs text-[#736B5B]">
-            <ClockIcon className="h-6 w-6" />
+          <span className="flex gap-1 items-center  text-xs text-[#736B5B]">
+            <ClockIcon className="h-3 w-3" />
             <p>{task.duration} minutes</p>
             <p
               className={` ${

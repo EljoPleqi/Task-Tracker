@@ -15,10 +15,12 @@ server.use('/img', express.static(path.join(__dirname, './img')));
 // ROUTERS
 
 const taskRouter = require('./routers/taskRouter');
+const userRouter = require('./routers/usersRouter');
 
 // ROUTES
 
 server.use('/tasks', taskRouter);
+server.use('/', userRouter);
 
 db.sequelize.sync().then(() => {
   server.listen(PORT, () => console.log(`Server is live on ${PORT}`));

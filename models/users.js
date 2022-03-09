@@ -1,12 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define('Users', {
     avatar: { type: DataTypes.STRING, allowNull: false },
-    username: {
-      type: DataTypes.STRING,
-      validate: { is: /^[A-Za-z0-9_.-]*$/, min: 4 },
-      allowNull: false,
-      unique: true,
-    },
     password: {
       type: DataTypes.STRING(),
       validate: {

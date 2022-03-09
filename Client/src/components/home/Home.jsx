@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import Task from '../task/Task';
 import CreateTask from '../create-task/CreateTask';
@@ -6,16 +7,17 @@ import Button from '../button/Button';
 import UserDetails from '../user/UserDetails';
 
 import { XCircleIcon } from '@heroicons/react/outline';
+import { loginState } from '../../atoms';
 
 const Home = () => {
   const [open, setOpen] = useState(false);
   const [openTask, setOpenTask] = useState();
-  const [login, setLogin] = useState(true);
+  const loginStatus = useRecoilValue(loginState);
 
   return (
     <div>
-      {login && (
-        <>
+      {loginStatus && (
+        <div className="bg-[#E2DDD3] h-screen w-full flex flex-col p-4 justify-center items-center">
           <div className="flex flex-col gap-8 h-full">
             <UserDetails />
             <h1 className="text-center">What will you accomplish today?</h1>
@@ -42,7 +44,7 @@ const Home = () => {
               </div>
             )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

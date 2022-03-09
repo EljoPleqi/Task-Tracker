@@ -1,21 +1,54 @@
 const multer = require('multer');
-import { Users } from '../models/users';
+const bcrypt = require('bcrypt');
+const path = require('path');
+const jwt = require('jsonwebtoken');
 
-exports.createUser = async((req, res) => {
-  const { avatar, usernaname, password, email } = req.body;
-  await Users.create({
-    avatar: avatar,
-    usernaname: usernaname,
-    password: password,
-    email: email,
-  });
+const { Users } = require('../models');
 
-  res.json('REGISTRATION COMPLETED');
-});
+exports.createUser = async (req, res) => {
+  try {
+    const { password, verPassword, email } = req.body;
+
+    console.log(req.body);
+
+    if (password === verPassword) {
+      bcrypt.hash(password, 10).then(
+        async (hash) =>
+          await Users.create({
+            avatar: req.file.path,
+            password: hash,
+            userEmail: email,
+          })
+      );
+    } else {
+      res.json('passwords do not match');
+    }
+  } catch (error) {
+    res.json(error);
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await Users.findAll({ where: { email: email } });
+
+    if (!user) res.json('User does not exist');
+    // check if password is correct
+    bcrypt.compare(password, user.password).then(async (match) => {
+      if (!match) res.json({ error: 'Wrong password' });
+
+      res.json(user);
+    });
+  } catch (error) {
+    res.json(error);
+  }
+};
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/img/user-avatars');
+    cb(null, 'img/user-avatars');
   },
   filename: (req, file, cb) => {
     const uniqueFilename = Date.now() + '-' + path.extname(file.originalname);

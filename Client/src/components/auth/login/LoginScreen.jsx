@@ -1,24 +1,57 @@
-import React from 'react';
-import { UserIcon, LockClosedIcon } from '@heroicons/react/outline';
+import React, { useState } from 'react';
+import { LockClosedIcon } from '@heroicons/react/outline';
+import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router';
+import { loginState } from '../../../atoms';
+import axios from 'axios';
 
 const LoginScreen = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [loginStatus, setLoginStatus] = useRecoilState(loginState);
+
+  const navigate = useNavigate();
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+    axios
+      .post('http://localhost:3030/login', {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        if (res.error) alert(res.error);
+        setLoginStatus(true);
+      });
+
+    if (loginStatus) navigate('/');
+  };
+
   return (
-    <div>
-      <form className="flex flex-col items-center justify-center w-72 gap-8 py-44">
+    <div className="bg-[#E2DDD3] h-screen w-full flex flex-col p-4 justify-center items-center">
+      <form
+        onSubmit={loginHandler}
+        className="flex flex-col items-center justify-center w-72 gap-8 py-44"
+      >
         <div className="flex flex-col gap-2 w-full">
           <input
-            type="text"
-            placeholder={`username`}
+            type="email"
+            placeholder={`jonhdoe@email.com`}
             className={` bg-[#F7F6F3] justify-between p-4   rounded-lg shadow-sm/> text-center`}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder={`password`}
             className={` bg-[#F7F6F3] justify-between p-4 rounded-lg shadow-sm/> text-center`}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button className="w-full flex gap-2 bg-[#263a44] text-white p-4 rounded-lg items-center justify-center">
-          {' '}
+        <button
+          type="submit"
+          className="w-full flex gap-2 bg-[#263a44] text-white p-4 rounded-lg items-center justify-center"
+        >
           <LockClosedIcon className="h-6 w-6" /> Log in
         </button>
         <span>

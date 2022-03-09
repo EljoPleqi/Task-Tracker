@@ -32,7 +32,7 @@ const CreateTask = ({ setOpen }) => {
       >
         <div className=" flex justify-between">
           <select
-            className="bg-[#E2DDD3] bg-opacity-0 "
+            className="bg-[#E2DDD3] bg-opacity-0 text-[#857557] placeholder:px-4"
             onChange={(e) => setImportance(e.target.value)}
           >
             <option value="">Set Priority</option>
@@ -42,7 +42,8 @@ const CreateTask = ({ setOpen }) => {
           </select>
           <input
             type="number"
-            className="bg-[#E2DDD3]  "
+            className="bg-[#E2DDD3] placeholder:text-[#857557] placeholder:px-4"
+            placeholder="Set Timer in Minutes"
             onChange={(e) => setDuration(e.target.value)}
           />
         </div>
