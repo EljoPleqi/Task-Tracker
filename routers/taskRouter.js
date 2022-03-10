@@ -7,11 +7,12 @@ const {
   uploadImage,
   deleteTask,
   markAsDone,
+  getTasksByUserId,
 } = require('../controllers/taskControllers');
 
 const router = express.Router();
 
-router.route('/').get(getAllTasks);
+router.route('/').get(authUser, getTasksByUserId);
 router
   .route('/:id')
   .get(getSingelTaskById)

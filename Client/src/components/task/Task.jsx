@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 import Timer from '../timer/Timer';
-import { useRecoilValue } from 'recoil';
-import { user, tasks } from '../../atoms';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { user, tasks, accessToken } from '../../atoms';
 
 import {
   TrashIcon,
   ClockIcon,
   CheckIcon,
   XIcon,
+  DotsVerticalIcon,
 } from '@heroicons/react/outline';
 import axios from 'axios';
 
 const Task = ({ setOpenTask, openTask }) => {
-  const [tasks, setTasks] = useState([]);
+  const [tasksList, setTasksList] = useRecoilState(tasks);
+  const userData = useRecoilValue(user);
+  const accessTkn = useRecoilValue(accessToken);
   const [rerender, setRerender] = useState(false);
+  console.log(userData.id);
+
+  const params = useParams();
+
+  console.log(params);
 
   useEffect(() => {
-    axios.get('http://localhost:3030/tasks').then((res) => setTasks(res.data));
+    axios
+      .get(`http://localhost:3030/tasks`, {
+        headers: { authorization: accessTkn },
+      })
+      .then((res) => setTasksList(res.data));
   }, [rerender]);
 
-  console.log(tasks);
-
-  const TaskCards = tasks.map((task, i) => {
+  const TaskCards = tasksList.map((task, i) => {
     const deleteTask = () => {
       axios.delete(`http://localhost:3030/tasks/${task.id}`);
     };
@@ -37,7 +48,7 @@ const Task = ({ setOpenTask, openTask }) => {
         ${
           openTask === i
             ? `flex flex-col items-center justify-center`
-            : `grid grid-cols-oneFour gap-4`
+            : `grid grid-cols-oneThreeOne gap-4`
         }`}
         key={task.id}
         onClick={() => setOpenTask(i)}
@@ -74,6 +85,9 @@ const Task = ({ setOpenTask, openTask }) => {
               {task.importance}
             </p>
           </span>
+        </div>
+        <div className="flex justify-end">
+          <DotsVerticalIcon className="h-6 w-6 cursor-pointer" />
         </div>
         {openTask === i && <Timer time={task.duration} />}
       </div>

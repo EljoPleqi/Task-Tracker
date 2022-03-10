@@ -5,16 +5,17 @@ const path = require('path');
 // create new tasks
 
 exports.createTask = async (req, res) => {
-  const { title, importance, duration } = req.body;
+  const { title, importance, duration, UserId } = req.body;
 
   await Tasks.create({
     title: title,
     image: req.file.path,
     duration: duration,
     importance: importance,
+    UserId: UserId,
   });
 
-  res.json('task');
+  res.json('task listed');
 };
 // Upload image
 const storage = multer.diskStorage({
@@ -56,10 +57,18 @@ exports.getAllTasks = async (req, res) => {
 
   res.json(tasks);
 };
+
+exports.getTasksByUserId = async (req, res) => {
+  const { id } = req.body;
+  const tasks = await Tasks.findAll({ where: { UserId: id } });
+
+  res.json(tasks);
+};
 // get single task
 exports.getSingelTaskById = async (req, res) => {
   const id = req.body.params;
   const task = Tasks.findOne({ where: { id: id } });
+  res.json(task);
 };
 
 // CODE FOR TASK UPDATE

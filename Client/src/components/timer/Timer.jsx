@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   PlayIcon,
   PauseIcon,
-  CheckIcon,
-  TrashIcon,
+  DotsVerticalIcon,
 } from '@heroicons/react/outline';
 
 const Timer = ({ time }) => {

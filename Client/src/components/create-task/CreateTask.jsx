@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SaveIcon, ArrowLeftIcon } from '@heroicons/react/outline';
-import { accessToken } from '../../atoms';
+import { accessToken, user } from '../../atoms';
+import { useRecoilValue } from 'recoil';
 import axios from 'axios';
 
 const CreateTask = ({ setOpen }) => {
@@ -9,6 +10,8 @@ const CreateTask = ({ setOpen }) => {
   const [duration, setDuration] = useState(0);
   const [importance, setImportance] = useState('');
 
+  const accessTkn = useRecoilValue(accessToken);
+  const { id } = useRecoilValue(user);
   const submitTask = (e) => {
     const task = new FormData();
 
@@ -16,11 +19,12 @@ const CreateTask = ({ setOpen }) => {
     task.append('image', img);
     task.append('duration', duration);
     task.append('importance', importance);
+    task.append('UserId', id);
 
     e.preventDefault();
     axios
       .post('http://localhost:3030/tasks/create', task, {
-        headers: { authorization: accessToken },
+        headers: { authorization: accessTkn },
       })
       .then((res) => setOpen(false));
   };

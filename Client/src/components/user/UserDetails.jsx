@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { user, accessToken } from '../../atoms.js';
-import img from '../../img/wUY0Ueb.jpeg';
 
 const UserDetails = () => {
   const [userData, setUserData] = useRecoilState(user);

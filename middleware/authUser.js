@@ -1,12 +1,9 @@
 require('dotenv').config();
 
-const { c } = require('docker/src/languages');
 const { verify } = require('jsonwebtoken');
 
 exports.authUser = (req, res, next) => {
   const accessTkn = req.headers.authorization;
-
-  console.log(accessTkn);
 
   if (!accessTkn) return res.sendStatus(401);
 
