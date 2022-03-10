@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import Timer from '../timer/Timer';
+import { useRecoilValue } from 'recoil';
+import { user, tasks } from '../../atoms';
 
 import {
   TrashIcon,

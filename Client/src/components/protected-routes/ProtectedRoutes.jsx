@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router';
 import { useRecoilValue } from 'recoil';
-import { loginState } from '../../atoms';
+import { loginState, accessToken } from '../../atoms';
 import Auth from '../auth/Auth';
 
 const ProtectedRoutes = () => {

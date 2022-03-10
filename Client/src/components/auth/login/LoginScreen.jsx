@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LockClosedIcon } from '@heroicons/react/outline';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
-import { loginState } from '../../../atoms';
+import { loginState, accessToken } from '../../../atoms';
 import axios from 'axios';
 
 const LoginScreen = () => {
@@ -10,6 +10,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const [loginStatus, setLoginStatus] = useRecoilState(loginState);
+  const [accessTkn, setAccessTkn] = useRecoilState(accessToken);
 
   const navigate = useNavigate();
 
@@ -23,9 +24,11 @@ const LoginScreen = () => {
       .then((res) => {
         if (res.error) alert(res.error);
         setLoginStatus(true);
-      });
+        setAccessTkn(res.data.accessToken);
 
-    if (loginStatus) navigate('/');
+        console.log(res.data);
+        navigate('/');
+      });
   };
 
   return (

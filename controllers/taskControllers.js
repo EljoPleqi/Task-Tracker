@@ -5,9 +5,7 @@ const path = require('path');
 // create new tasks
 
 exports.createTask = async (req, res) => {
-  console.log('LINE 7 SERVER');
-  const { title, image, importance, duration } = req.body;
-  console.log(req);
+  const { title, importance, duration } = req.body;
 
   await Tasks.create({
     title: title,
@@ -56,7 +54,6 @@ exports.getAllTasks = async (req, res) => {
   // add code to get userID later
   const tasks = await Tasks.findAll();
 
-  console.log(tasks);
   res.json(tasks);
 };
 // get single task
@@ -79,7 +76,6 @@ exports.markAsDone = async (req, res) => {
 
 // CODE FOR TASK DELETION
 exports.deleteTask = async (req, res) => {
-  console.log(req.params);
   const { id } = req.params;
 
   const task = await Tasks.findByPk(id);

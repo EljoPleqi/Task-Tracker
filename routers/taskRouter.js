@@ -1,4 +1,5 @@
 const express = require('express');
+const { authUser } = require('../middleware/authUser');
 const {
   getAllTasks,
   getSingelTaskById,
@@ -16,6 +17,6 @@ router
   .get(getSingelTaskById)
   .patch(markAsDone)
   .delete(deleteTask);
-router.route('/create').post(uploadImage, createTask);
+router.route('/create').post(authUser, uploadImage, createTask);
 
 module.exports = router;

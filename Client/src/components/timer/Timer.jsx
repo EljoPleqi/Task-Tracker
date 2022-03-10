@@ -41,7 +41,10 @@ const Timer = ({ time }) => {
 
     const t = setInterval(() => {
       if (stateRef.current) return;
-      if (secondsRef.current === 0) console.log('timer over');
+      if (secondsRef.current === 1) {
+        clearInterval(t);
+        stateRef.current = !paused;
+      }
 
       countdown();
     }, 1000);

@@ -1,7 +1,9 @@
 const multer = require('multer');
 const bcrypt = require('bcrypt');
 const path = require('path');
-const jwt = require('jsonwebtoken');
+const { sign } = require('jsonwebtoken');
+
+require('dotenv').config();
 
 const { Users } = require('../models');
 
@@ -32,14 +34,20 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await Users.findAll({ where: { email: email } });
+    const userData = await Users.findOne({ where: { userEmail: email } });
+
+    const user = userData.dataValues;
 
     if (!user) res.json('User does not exist');
+
     // check if password is correct
     bcrypt.compare(password, user.password).then(async (match) => {
       if (!match) res.json({ error: 'Wrong password' });
 
-      res.json(user);
+      const accessToken = sign(user, process.env.ACCESS_TOKEN_SECRET);
+      const refreshToken = sign(user, process.env.REFRESH_TOKEN_SECRET);
+
+      res.json({ accessToken: accessToken, refreshToken: refreshToken });
     });
   } catch (error) {
     res.json(error);
@@ -78,3 +86,14 @@ exports.uploadAvatar = multer({
       );
   },
 }).single('avatar');
+
+// GET USER
+
+exports.getUser = async (req, res) => {
+  const { id } = req.body;
+
+  const user = await Users.findByPk(id);
+  console.log(user);
+
+  res.json(user);
+};

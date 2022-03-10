@@ -5,7 +5,7 @@ import { SplashScreen } from '../illustrations/FirstSplashScreen';
 
 import { UserCircleIcon, LockClosedIcon } from '@heroicons/react/outline';
 
-const Auth = ({ setLogin }) => {
+const Auth = () => {
   return (
     <div className="bg-[#E2DDD3] h-screen w-full flex flex-col p-4 justify-center items-center">
       <div className="flex flex-col items-center gap-10">

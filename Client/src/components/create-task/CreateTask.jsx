@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SaveIcon, ArrowLeftIcon } from '@heroicons/react/outline';
+import { accessToken } from '../../atoms';
 import axios from 'axios';
 
 const CreateTask = ({ setOpen }) => {
@@ -18,7 +19,9 @@ const CreateTask = ({ setOpen }) => {
 
     e.preventDefault();
     axios
-      .post('http://localhost:3030/tasks/create', task)
+      .post('http://localhost:3030/tasks/create', task, {
+        headers: { authorization: accessToken },
+      })
       .then((res) => setOpen(false));
   };
 
