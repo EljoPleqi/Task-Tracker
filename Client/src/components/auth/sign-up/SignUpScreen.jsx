@@ -44,7 +44,6 @@ const SignUpScreen = ({ setToggleSignUp }) => {
             className="bg-[#E2DDD3] py-2 px-4 rounded-lg file:px-4 file:py-2 file:bg-[#857557] file:rounded-full file:text-[#857557] 
             file:mr-4 file:bg-opacity-30 hover:file:bg-opacity-60 file:border-0"
             onChange={(e) => {
-              console.log(e.target.files[0]);
               setAvatar(e.target.files[0]);
             }}
           />

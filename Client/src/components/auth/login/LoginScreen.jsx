@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LockClosedIcon } from '@heroicons/react/outline';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { loginState, accessToken } from '../../../atoms';
 import axios from 'axios';
 
@@ -25,14 +26,16 @@ const LoginScreen = () => {
         if (res.error) alert(res.error);
         setLoginStatus(true);
         setAccessTkn(res.data.accessToken);
-
-        console.log(res.data);
         navigate('/');
       });
   };
 
   return (
-    <div className="bg-[#E2DDD3] h-screen w-full flex flex-col p-4 justify-center items-center">
+    <div
+      className={
+        'bg-[#E2DDD3] h-screen w-full flex flex-col p-4 justify-center items-center'
+      }
+    >
       <form
         onSubmit={loginHandler}
         className="flex flex-col items-center justify-center w-72 gap-8 py-44"
@@ -58,13 +61,12 @@ const LoginScreen = () => {
           <LockClosedIcon className="h-6 w-6" /> Log in
         </button>
         <span>
-          <a
-            href="#"
+          <Link
+            to="/login"
             className="text-[#262219] rounded-lg cursor-pointer"
-            onClick={() => setToggleSignUp(false)}
           >
             Don't have an account? Sign up
-          </a>
+          </Link>
         </span>
       </form>
     </div>

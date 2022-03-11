@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { atom } from 'recoil';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './components/home/Home';
 import ProtectedRoutes from './components/protected-routes/ProtectedRoutes';

@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  PlayIcon,
-  PauseIcon,
-  DotsVerticalIcon,
-} from '@heroicons/react/outline';
+import { PlayIcon, PauseIcon } from '@heroicons/react/outline';
 
-const Timer = ({ time }) => {
+const Timer = ({ time, markAsDone, setOpenTask }) => {
   const [seconds, setSeconds] = useState(0);
   const [paused, setPaused] = useState(true);
 
@@ -43,6 +39,8 @@ const Timer = ({ time }) => {
       if (secondsRef.current === 1) {
         clearInterval(t);
         stateRef.current = !paused;
+        setOpenTask(false);
+        markAsDone();
       }
 
       countdown();

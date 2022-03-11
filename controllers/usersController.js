@@ -11,8 +11,6 @@ exports.createUser = async (req, res) => {
   try {
     const { password, verPassword, email } = req.body;
 
-    console.log(req.body);
-
     if (password === verPassword) {
       bcrypt.hash(password, 10).then(
         async (hash) =>
@@ -93,7 +91,6 @@ exports.getUser = async (req, res) => {
   const { id } = req.body;
 
   const user = await Users.findByPk(id);
-  console.log(user);
 
   res.json(user);
 };

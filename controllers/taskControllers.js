@@ -1,6 +1,7 @@
 const multer = require('multer');
-const { Tasks } = require('../models');
+const { Tasks, sequelize } = require('../models');
 const path = require('path');
+const { c } = require('docker/src/languages');
 
 // create new tasks
 
@@ -60,7 +61,14 @@ exports.getAllTasks = async (req, res) => {
 
 exports.getTasksByUserId = async (req, res) => {
   const { id } = req.body;
-  const tasks = await Tasks.findAll({ where: { UserId: id } });
+  const currentDate = new Date().getDate();
+  console.log(currentDate);
+
+  const allTasks = await Tasks.findAll({ where: { UserId: id }, raw: true });
+
+  const tasks = allTasks.filter(
+    (task) => task.createdAt.getDate() >= currentDate
+  );
 
   res.json(tasks);
 };

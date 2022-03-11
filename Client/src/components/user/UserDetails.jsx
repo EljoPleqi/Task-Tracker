@@ -1,23 +1,23 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { user, accessToken } from '../../atoms.js';
+import { user, accessToken, tasks } from '../../atoms.js';
 
 const UserDetails = () => {
   const [userData, setUserData] = useRecoilState(user);
   const accessTkn = useRecoilValue(accessToken);
+  const userTasks = useRecoilValue(tasks);
   useEffect(() => {
     axios
       .get('http://127.0.0.1:3030', {
         headers: { authorization: accessTkn },
       })
       .then((res) => {
-        console.log(res);
         setUserData(res.data);
       });
   }, []);
 
-  console.log(userData);
+  console.log(userTasks);
   return (
     <div className=" grid grid-cols-twoThree p-6  bg-[#F7F6F3] rounded-lg shadow-sm">
       <img
@@ -30,7 +30,7 @@ const UserDetails = () => {
         <p>{userData.userEmail}</p>
         <span className="flex gap-2">
           <p>Today's tasks</p>
-          <p>99</p>
+          <p>{userTasks.length}</p>
         </span>
       </div>
     </div>
